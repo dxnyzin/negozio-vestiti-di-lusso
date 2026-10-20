@@ -274,3 +274,595 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER ESSENTIEL — Edizione Sartoriale</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paper: '#fcfcf9',
+                        ink: '#111111',
+                        stoneGray: '#888888',
+                        lightBorder: '#e5e4df'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* Minimal custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fcfcf9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #111111;
+        }
+
+        .drawer-transition {
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    </style>
+</head>
+<body class="bg-paper text-ink font-sans antialiased selection:bg-ink selection:text-paper min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER MINIMALE -->
+    <header class="sticky top-0 z-40 bg-paper/90 backdrop-blur-md border-b border-lightBorder">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex space-x-8 text-[11px] uppercase tracking-[0.25em] text-stoneGray">
+                <a href="#catalogo" onclick="setCategoryFilter('Tutti')" class="hover:text-ink transition-colors">Collezione</a>
+                <a href="#filosofia" class="hover:text-ink transition-colors">Filosofia</a>
+                <a href="#contatti" class="hover:text-ink transition-colors">Atelier</a>
+            </nav>
+
+            <!-- Brand Logo -->
+            <a href="#" class="font-serif text-2xl sm:text-3xl tracking-[0.3em] uppercase font-light text-center">
+                ATELIER ESSENTIEL
+            </a>
+
+            <!-- Cart Trigger -->
+            <button onclick="toggleCartDrawer()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] hover:text-stoneGray transition-colors">
+                <span>Carrello</span>
+                <span id="cartCountBadge" class="w-5 h-5 rounded-full bg-ink text-paper flex items-center justify-center text-[10px] font-medium">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- BANNER INTRODUTTIVO (MINIMAL HERO) -->
+    <section class="py-20 sm:py-28 border-b border-lightBorder text-center px-6">
+        <div class="max-w-3xl mx-auto space-y-6">
+            <span class="text-[10px] uppercase tracking-[0.35em] text-stoneGray font-medium">Edizione Permanente · Milano</span>
+            <h1 class="font-serif text-4xl sm:text-6xl font-light tracking-wide leading-tight">
+                Forme Essenziali, <br><span class="italic font-normal">Fibre Nobili.</span>
+            </h1>
+            <p class="text-stoneGray text-xs sm:text-sm font-light leading-relaxed max-w-xl mx-auto tracking-wide">
+                Una selezione rigorosa di capi realizzati in tiratura limitata. Nessuna ostentazione, solo proporzioni pure, cashmere Loro Piana e seta di Como.
+            </p>
+        </div>
+    </section>
+
+    <!-- MAIN CATALOGO SECTION -->
+    <main id="catalogo" class="max-w-7xl mx-auto px-6 py-16 flex-1 w-full">
+        
+        <!-- BARRA FILTRI & RICERCA -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 mb-12 border-b border-lightBorder">
+            
+            <!-- Category Tabs -->
+            <div id="categoryTabs" class="flex flex-wrap gap-4 text-[11px] uppercase tracking-[0.2em]">
+                <button onclick="setCategoryFilter('Tutti')" class="cat-tab pb-1 border-b border-ink font-medium text-ink">Tutti</button>
+                <button onclick="setCategoryFilter('Cappotti')" class="cat-tab pb-1 border-b border-transparent text-stoneGray hover:text-ink">Cappotti</button>
+                <button onclick="setCategoryFilter('Maglieria')" class="cat-tab pb-1 border-b border-transparent text-stoneGray hover:text-ink">Maglieria</button>
+                <button onclick="setCategoryFilter('Abiti')" class="cat-tab pb-1 border-b border-transparent text-stoneGray hover:text-ink">Abiti</button>
+                <button onclick="setCategoryFilter('Accessori')" class="cat-tab pb-1 border-b border-transparent text-stoneGray hover:text-ink">Accessori</button>
+            </div>
+
+            <!-- Search Input -->
+            <div class="relative w-full md:w-64">
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Cerca tessuto o capo..." 
+                       class="w-full bg-transparent border-b border-lightBorder pb-1 text-xs text-ink placeholder-stoneGray focus:outline-none focus:border-ink transition-colors tracking-wider">
+            </div>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Rendered by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-20 border border-dashed border-lightBorder my-8">
+            <p class="font-serif text-xl text-stoneGray">Nessun capo trovato</p>
+            <button onclick="resetFilters()" class="mt-4 text-[10px] uppercase tracking-[0.2em] underline text-ink">Mostra tutti i capi</button>
+        </div>
+    </section>
+
+    <!-- SEZIONE FILOSOFIA (MINIMALIST) -->
+    <section id="filosofia" class="border-t border-lightBorder py-20 bg-paper">
+        <div class="max-w-4xl mx-auto px-6 text-center space-y-4">
+            <span class="text-[10px] uppercase tracking-[0.3em] text-stoneGray">Il Manifesto</span>
+            <h2 class="font-serif text-3xl font-light">Sostenibilità del Tempo</h2>
+            <p class="text-xs sm:text-sm text-stoneGray leading-relaxed font-light max-w-2xl mx-auto">
+                Rifiutiamo i ritmi della moda stagionale. Creiamo capi pensati per rimanere immutati nel guardaroba per decenni, lavorati esclusivamente da storici laboratori artigianali italiani.
+            </p>
+        </div>
+    </section>
+
+    <!-- FOOTER MINIMALE -->
+    <footer id="contatti" class="border-t border-lightBorder py-12 text-center text-stoneGray text-[10px] uppercase tracking-[0.25em] space-y-4">
+        <div>ATELIER ESSENTIEL · VIA MONTENAPOLEONE 12, MILANO</div>
+        <div class="text-[9px] text-stoneGray/70">&copy; 2026 ATELIER ESSENTIEL. TUTTI I DIRITTI RISERVATI.</div>
+    </footer>
+
+
+    <!-- ================= DRAWERS & MODALS ================= -->
+
+    <!-- CARRELLO DRAWER (SIDEBAR) -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 pointer-events-none hidden">
+        <div id="cartBackdrop" onclick="toggleCartDrawer()" class="absolute inset-0 bg-ink/40 backdrop-blur-xs opacity-0 transition-opacity pointer-events-auto"></div>
+        <div id="cartPanel" class="absolute top-0 right-0 bottom-0 w-full max-w-md bg-paper border-l border-lightBorder p-8 pointer-events-auto transform translate-x-full drawer-transition flex flex-col justify-between">
+            
+            <div>
+                <div class="flex items-center justify-between pb-6 border-b border-lightBorder">
+                    <h3 class="font-serif text-2xl font-light">La Tua Selezione</h3>
+                    <button onclick="toggleCartDrawer()" class="text-stoneGray hover:text-ink text-xs uppercase tracking-widest">Chiudi ✕</button>
+                </div>
+
+                <div id="cartItemsList" class="divide-y divide-lightBorder my-6 max-h-[55vh] overflow-y-auto pr-2">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-lightBorder space-y-4">
+                <div class="flex justify-between items-center text-xs uppercase tracking-widest">
+                    <span>Totale</span>
+                    <span id="cartSubtotal" class="font-serif text-xl font-bold text-ink">€0</span>
+                </div>
+                <button onclick="handleCheckout()" class="w-full py-4 bg-ink text-paper text-xs uppercase tracking-[0.25em] hover:bg-stone-800 transition-colors">
+                    Procedi all'Ordine Privé
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- QUICK VIEW MODAL (DETTAGLIO CAPO) -->
+    <div id="detailModal" class="fixed inset-0 z-50 bg-ink/50 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-paper border border-lightBorder max-w-xl w-full p-8 sm:p-10 relative">
+            <button onclick="closeDetailModal()" class="absolute top-6 right-6 text-stoneGray hover:text-ink text-sm">✕</button>
+
+            <div id="modalContent">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-8 right-8 z-50 bg-ink text-paper text-[11px] uppercase tracking-widest px-6 py-3 border border-lightBorder shadow-xl transform translate-y-16 opacity-0 transition-all duration-300 pointer-events-none">
+        Capo aggiunto
+    </div>
+
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // DATASET PRODOTTI (8 CAPI D'ALTA MODA SENZA IMMAGINI)
+        const products = [
+            {
+                id: 'AE-01',
+                name: 'Cappotto Architetturale',
+                category: 'Cappotti',
+                price: 3800,
+                composition: '100% Cashmere Loro Piana',
+                colors: [
+                    { name: 'Nero Assoluto', hex: '#111111' },
+                    { name: 'Cammello Reale', hex: '#b8976b' },
+                    { name: 'Avorio', hex: '#f4f1ea' }
+                ],
+                description: 'Cappotto taglio oversize con spalla scivolata e rever sartoriale affilato. Realizzato a mano in doppio strato di puro cashmere pettinato.',
+                care: 'Lavaggio a secco specializzato.'
+            },
+            {
+                id: 'AE-02',
+                name: 'Maglione Collo Alto Essenziale',
+                category: 'Maglieria',
+                price: 1200,
+                composition: '100% Lana Vergine Super 160s',
+                colors: [
+                    { name: 'Panna Seta', hex: '#e8e4dc' },
+                    { name: 'Antracite', hex: '#2b2b2b' },
+                    { name: 'Moka', hex: '#3d312a' }
+                ],
+                description: 'Maglieria fine a punto rasato senza cuciture visibili. Un capo termoregolatore di straordinaria morbidezza e caduta fluida.',
+                care: 'Lavare a mano in acqua fredda.'
+            },
+            {
+                id: 'AE-03',
+                name: 'Abito Scivolato in Seta',
+                category: 'Abiti',
+                price: 2600,
+                composition: '100% Seta Organzino di Como',
+                colors: [
+                    { name: 'Nero Notte', hex: '#0a0a0a' },
+                    { name: 'Sabbia', hex: '#d4c5b3' }
+                ],
+                description: 'Abito fluido dal taglio minimale in sbieco che accarezza la figura. Scollo a barchetta essenziale e rifiniture a mano.',
+                care: 'Stiro a vapore delicato.'
+            },
+            {
+                id: 'AE-04',
+                name: 'Pantalone Sartoriale Fluido',
+                category: 'Abiti',
+                price: 1150,
+                composition: '60% Seta, 40% Lana Pettinata',
+                colors: [
+                    { name: 'Nero', hex: '#111111' },
+                    { name: 'Grigio Chiaro', hex: '#a3a3a3' }
+                ],
+                description: 'Pantalone a gamba larga con doppia pinces frontale. Tessuto misto leggero che garantisce elasticità e piega impeccabile.',
+                care: 'Lavaggio a secco.'
+            },
+            {
+                id: 'AE-05',
+                name: 'Cardigan Misto Cashmere',
+                category: 'Maglieria',
+                price: 1650,
+                composition: '70% Cashmere, 30% Seta Organica',
+                colors: [
+                    { name: 'Avorio', hex: '#f0ece1' },
+                    { name: 'Carbone', hex: '#242424' }
+                ],
+                description: 'Cardigan dalla linea dritta con bottoni discreti in madreperla opaca. Ideale per la stratificazione in ogni stagione.',
+                care: 'Conservare piegato.'
+            },
+            {
+                id: 'AE-06',
+                name: 'Borsa Tote in Nappa Liscia',
+                category: 'Accessori',
+                price: 2400,
+                composition: '100% Pelle Nappa Pienofiore',
+                colors: [
+                    { name: 'Nero Assoluto', hex: '#111111' },
+                    { name: 'Cuoio Scuro', hex: '#5c3a21' }
+                ],
+                description: 'Tote bag strutturata senza loghi visibili, foderata internamente in camoscio naturale. Un capolavoro di pelletteria toscana.',
+                care: 'Trattare con crema idratante neutra.'
+            },
+            {
+                id: 'AE-07',
+                name: 'Sciarpa Maxi in Cashmere',
+                category: 'Accessori',
+                price: 680,
+                composition: '100% Cashmere Pettinato Extra Fine',
+                colors: [
+                    { name: 'Cammello', hex: '#b8976b' },
+                    { name: 'Grigio Melange', hex: '#8a8a8a' },
+                    { name: 'Nero', hex: '#111111' }
+                ],
+                description: 'Stola oversize rifinita con frange corte fatte a mano. Leggera come una piuma ma estremamente avvolgente.',
+                care: 'Lavare esclusivamente a secco.'
+            },
+            {
+                id: 'AE-08',
+                name: 'Giacca Monopetto Sartoriale',
+                category: 'Cappotti',
+                price: 2200,
+                composition: '100% Lana Vergine Fresco di Lana',
+                colors: [
+                    { name: 'Nero', hex: '#111111' },
+                    { name: 'Blu Navy', hex: '#1b2230' }
+                ],
+                description: 'Giacca da blazer dalla silhouette rigorosa. Costruzione interna alleggerita senza spalline rigide.',
+                care: 'Custodire su gruccia sagomata.'
+            }
+        ];
+
+        // STATE MANAGEMENT
+        let currentCategory = 'Tutti';
+        let searchQuery = '';
+        let selectedSizes = {}; // productId -> size ('S', 'M', etc.)
+        let selectedColors = {}; // productId -> colorHex
+        let cart = [];
+
+        // INITIALIZATION
+        window.addEventListener('DOMContentLoaded', () => {
+            products.forEach(p => {
+                selectedSizes[p.id] = 'M';
+                selectedColors[p.id] = p.colors[0].hex;
+            });
+            renderProducts();
+        });
+
+        // FILTER FUNCTIONS
+        function setCategoryFilter(category) {
+            currentCategory = category;
+            
+            // Update tab UI
+            document.querySelectorAll('.cat-tab').forEach(tab => {
+                if (tab.textContent.trim() === category) {
+                    tab.className = 'cat-tab pb-1 border-b border-ink font-medium text-ink';
+                } else {
+                    tab.className = 'cat-tab pb-1 border-b border-transparent text-stoneGray hover:text-ink';
+                }
+            });
+
+            renderProducts();
+        }
+
+        function handleSearch() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            renderProducts();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            searchQuery = '';
+            setCategoryFilter('Tutti');
+        }
+
+        // RENDER PRODUCT CARDS (TYPOGRAPHIC & CLEAN)
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            const filtered = products.filter(p => {
+                const matchesCategory = currentCategory === 'Tutti' || p.category === currentCategory;
+                const matchesSearch = searchQuery === '' || 
+                    p.name.toLowerCase().includes(searchQuery) || 
+                    p.composition.toLowerCase().includes(searchQuery);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            grid.innerHTML = filtered.map(p => {
+                const formattedPrice = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(p.price);
+                const currentSize = selectedSizes[p.id] || 'M';
+                const currentColorHex = selectedColors[p.id] || p.colors[0].hex;
+
+                return `
+                    <div class="border border-lightBorder p-6 bg-paper flex flex-col justify-between hover:border-ink transition-colors duration-300">
+                        <div>
+                            <!-- Typography Card Monogram / Visual Placeholder -->
+                            <div onclick="openDetailModal('${p.id}')" class="aspect-[3/4] bg-paper border border-lightBorder mb-6 flex flex-col items-center justify-center cursor-pointer relative group p-4">
+                                <span class="font-serif text-5xl font-light text-stoneGray/20 group-hover:text-ink transition-colors">AE</span>
+                                <span class="text-[9px] uppercase tracking-[0.25em] text-stoneGray absolute bottom-4">${p.category}</span>
+                            </div>
+
+                            <!-- Title & Composition -->
+                            <div class="text-[10px] uppercase tracking-[0.2em] text-stoneGray font-medium mb-1">${p.composition}</div>
+                            <h3 onclick="openDetailModal('${p.id}')" class="font-serif text-lg font-normal text-ink hover:underline cursor-pointer leading-snug mb-2">
+                                ${p.name}
+                            </h3>
+                            <div class="font-serif text-base font-semibold text-ink mb-4">${formattedPrice}</div>
+
+                            <!-- Color Palette Swatches -->
+                            <div class="flex items-center space-x-2 mb-4">
+                                <span class="text-[9px] uppercase tracking-widest text-stoneGray mr-1">Colore:</span>
+                                ${p.colors.map(c => `
+                                    <button onclick="selectProductColor('${p.id}', '${c.hex}')" 
+                                            title="${c.name}"
+                                            class="w-3.5 h-3.5 rounded-full border border-lightBorder ${currentColorHex === c.hex ? 'ring-1 ring-ink ring-offset-2 ring-offset-paper' : ''}"
+                                            style="background-color: ${c.hex}">
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Actions: Size & Add to Cart -->
+                        <div class="pt-4 border-t border-lightBorder space-y-3">
+                            <!-- Size Picker -->
+                            <div class="flex justify-between items-center text-[10px] uppercase tracking-widest text-stoneGray">
+                                <span>Taglia:</span>
+                                <div class="flex space-x-2">
+                                    ${['XS', 'S', 'M', 'L'].map(sz => `
+                                        <button onclick="selectProductSize('${p.id}', '${sz}')" 
+                                                class="px-1.5 py-0.5 border ${currentSize === sz ? 'border-ink text-ink font-bold' : 'border-transparent text-stoneGray hover:text-ink'}">
+                                            ${sz}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <!-- Add Button -->
+                            <button onclick="addToCart('${p.id}')" class="w-full py-2.5 bg-ink text-paper text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors">
+                                Aggiungi al Carrello
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // SELECTION HELPERS
+        function selectProductSize(productId, size) {
+            selectedSizes[productId] = size;
+            renderProducts();
+        }
+
+        function selectProductColor(productId, colorHex) {
+            selectedColors[productId] = colorHex;
+            renderProducts();
+        }
+
+        // CART MANAGEMENT
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const size = selectedSizes[productId] || 'M';
+            const colorHex = selectedColors[productId] || product.colors[0].hex;
+            const colorObj = product.colors.find(c => c.hex === colorHex) || product.colors[0];
+
+            const existingIndex = cart.findIndex(item => item.id === productId && item.size === size && item.colorHex === colorHex);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    composition: product.composition,
+                    size: size,
+                    colorName: colorObj.name,
+                    colorHex: colorObj.hex,
+                    quantity: 1
+                });
+            }
+
+            updateCartUI();
+            showToast(`Aggiunto: ${product.name}`);
+        }
+
+        function updateCartQuantity(index, delta) {
+            if (cart[index]) {
+                cart[index].quantity += delta;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cartCountBadge');
+            const list = document.getElementById('cartItemsList');
+            const subtotalEl = document.getElementById('cartSubtotal');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            badge.textContent = totalItems;
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            subtotalEl.textContent = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(subtotal);
+
+            if (cart.length === 0) {
+                list.innerHTML = `
+                    <div class="py-12 text-center text-stoneGray text-xs uppercase tracking-widest font-light">
+                        Il tuo carrello è vuoto
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = cart.map((item, idx) => {
+                const itemTotal = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(item.price * item.quantity);
+                return `
+                    <div class="py-4 flex items-center justify-between">
+                        <div>
+                            <h4 class="font-serif text-base text-ink">${item.name}</h4>
+                            <div class="text-[10px] uppercase tracking-wider text-stoneGray mt-0.5">
+                                Taglia: ${item.size} · ${item.colorName}
+                            </div>
+                            <div class="font-serif text-sm font-semibold text-ink mt-1">${itemTotal}</div>
+                        </div>
+
+                        <div class="flex items-center space-x-3 text-xs">
+                            <button onclick="updateCartQuantity(${idx}, -1)" class="w-6 h-6 border border-lightBorder flex items-center justify-center hover:border-ink">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateCartQuantity(${idx}, 1)" class="w-6 h-6 border border-lightBorder flex items-center justify-center hover:border-ink">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cartDrawer');
+            const backdrop = document.getElementById('cartBackdrop');
+            const panel = document.getElementById('cartPanel');
+
+            if (drawer.classList.contains('hidden')) {
+                drawer.classList.remove('hidden');
+                setTimeout(() => {
+                    backdrop.classList.remove('opacity-0');
+                    panel.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                backdrop.classList.add('opacity-0');
+                panel.classList.add('translate-x-full');
+                setTimeout(() => {
+                    drawer.classList.add('hidden');
+                }, 350);
+            }
+        }
+
+        // DETAIL MODAL
+        function openDetailModal(productId) {
+            const p = products.find(prod => prod.id === productId);
+            if (!p) return;
+
+            const formattedPrice = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(p.price);
+
+            document.getElementById('modalContent').innerHTML = `
+                <span class="text-[10px] uppercase tracking-[0.25em] text-stoneGray">${p.category}</span>
+                <h2 class="font-serif text-3xl text-ink font-light mt-1 mb-2">${p.name}</h2>
+                <div class="font-serif text-xl font-bold text-ink mb-4">${formattedPrice}</div>
+                
+                <div class="border-t border-b border-lightBorder py-4 my-4 space-y-2 text-xs text-stoneGray font-light">
+                    <p><strong>Composizione:</strong> ${p.composition}</p>
+                    <p><strong>Cura:</strong> ${p.care}</p>
+                </div>
+
+                <p class="text-xs text-stoneGray leading-relaxed mb-6 font-light">${p.description}</p>
+
+                <button onclick="addToCart('${p.id}'); closeDetailModal();" class="w-full py-3 bg-ink text-paper text-xs uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors">
+                    Aggiungi al Carrello
+                </button>
+            `;
+
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        // CHECKOUT & TOAST
+        function handleCheckout() {
+            if (cart.length === 0) return;
+            cart = [];
+            updateCartUI();
+            toggleCartDrawer();
+            showToast('Richiesta inviata. Il nostro Concierge ti contatterà.');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.remove('translate-y-16', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-16', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
