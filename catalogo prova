@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER ESSENTIEL — High Fashion Catalog & Atelier</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paper: '#fcfcf9',
+                        ink: '#111111',
+                        stoneGray: '#888888',
+                        lightBorder: '#e5e4df',
+                        goldAccent: '#a88952'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@200;300;400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Scrollbar personalizzata minimalista */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fcfcf9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #111111;
+        }
+
+        .drawer-transition {
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Stili avanzati per il form di contatto */
+        .form-field {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e5e4df;
+            background-color: #ffffff;
+            color: #111111;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-field:focus {
+            outline: none;
+            border-color: #111111;
+        }
+    </style>
+</head>
+<body class="bg-paper text-ink font-sans antialiased selection:bg-ink selection:text-paper min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER & NAVIGATION -->
+    <header class="sticky top-0 z-40 bg-paper/95 backdrop-blur-md border-b border-lightBorder">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            
+            <!-- Mobile Menu Toggle Button -->
+            <button onclick="toggleMobileNav()" class="md:hidden text-ink p-2 focus:outline-none" aria-label="Apri Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <!-- Navigation Links (Desktop) -->
+            <nav class="hidden md:flex space-x-8 text-[11px] uppercase tracking-[0.25em] text-stoneGray">
+                <a href="#catalogo" onclick="setCategoryFilter('Tutti')" class="hover:text-ink transition-colors">Collezione</a>
+                <a href="#chisiamo" class="hover:text-ink transition-colors">Chi Siamo</a>
+                <a href="#filosofia" class="hover:text-ink transition-colors">Filosofia</a>
+                <a href="#contatti" class="hover:text-ink transition-colors">Contatti</a>
+            </nav>
+
+            <!-- Brand Logo -->
+            <a href="#" class="font-serif text-2xl sm:text-3xl tracking-[0.3em] uppercase font-light text-center">
+                ATELIER ESSENTIEL
+            </a>
+
+            <!-- Cart Trigger Button -->
+            <button onclick="toggleCartDrawer()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] hover:text-stoneGray transition-colors">
+                <span class="hidden sm:inline">Carrello</span>
+                <span id="cartCountBadge" class="w-5 h-5 rounded-full bg-ink text-paper flex items-center justify-center text-[10px] font-medium">0</span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobileNavMenu" class="hidden md:hidden border-b border-lightBorder bg-paper px-6 py-4 space-y-3 text-[11px] uppercase tracking-[0.2em] text-stoneGray">
+            <a href="#catalogo" onclick="setCategoryFilter('Tutti'); toggleMobileNav();" class="block hover:text-ink py-1">Collezione</a>
+            <a href="#chisiamo" onclick="toggleMobileNav();" class="block hover:text-ink py-1">Chi Siamo</a>
+            <a href="#filosofia" onclick="toggleMobileNav();" class="block hover:text-ink py-1">Filosofia</a>
+            <a href="#contatti" onclick="toggleMobileNav();" class="block hover:text-ink py-1">Contatti</a>
+        </div>
+    </header>
+
+    <!-- BANNER INTRODUTTIVO (HERO MINIMAL) -->
+    <section class="py-20 sm:py-28 border-b border-lightBorder text-center px-6">
+        <div class="max-w-3xl mx-auto space-y-6">
+            <span class="text-[10px] uppercase tracking-[0.35em] text-stoneGray font-medium">Edizione Permanente · Milano</span>
+            <h1 class="font-serif text-4xl sm:text-6xl font-light tracking-wide leading-tight">
+                Forme Essenziali, <br><span class="italic font-normal">Fibre Nobili.</span>
+            </h1>
+            <p class="text-stoneGray text-xs sm:text-sm font-light leading-relaxed max-w-xl mx-auto tracking-wide">
+                Una selezione rigorosa di capi realizzati in tiratura limitata. Nessuna ostentazione, solo proporzioni pure, cashmere Loro Piana e seta di Como.
+            </p>
+        </div>
+    </section>
+
+    <!-- CATALOGO SECTION -->
+    <main id="catalogo" class="max-w-7xl mx-auto px-6 py-16 flex-1 w-full">
+        
+        <!-- BARRA FILTRI & RICERCA -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 mb-12 border-b border-lightBorder">
+            
+            <!-- Category Tabs -->
+            <div id="categoryTabs" class="flex flex-wrap gap-4 text-[11px] uppercase tracking-[0.2em]">
+                <button onclick="setCategoryFilter('Tutti')" class="cat-tab pb-1 border-b border-ink font-medium text-ink">Tutti</button>
+                <button onclick="setCategoryFilter('Cappotti')" class="cat-tab pb-1 border-b border-transparent text-stoneGray hover:text-ink">Cappotti</button>
+                <button onclick="setCategoryFilter('Maglieria')" class="cat-tab pb-1 border-b border-transparent text-stoneGray hover:text-ink">Maglieria</button>
+                <button onclick="setCategoryFilter('Abiti')" class="cat-tab pb-1 border-b border-transparent text-stoneGray hover:text-ink">Abiti</button>
+                <button onclick="setCategoryFilter('Accessori')" class="cat-tab pb-1 border-b border-transparent text-stoneGray hover:text-ink">Accessori</button>
+            </div>
+
+            <!-- Search Input -->
+            <div class="relative w-full md:w-64">
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Cerca tessuto o capo..." 
+                       class="w-full bg-transparent border-b border-lightBorder pb-1 text-xs text-ink placeholder-stoneGray focus:outline-none focus:border-ink transition-colors tracking-wider">
+            </div>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Rendered by JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-20 border border-dashed border-lightBorder my-8">
+            <p class="font-serif text-xl text-stoneGray">Nessun capo trovato</p>
+            <button onclick="resetFilters()" class="mt-4 text-[10px] uppercase tracking-[0.2em] underline text-ink">Mostra tutti i capi</button>
+        </div>
+    </main>
+
+    <!-- SEZIONE CHI SIAMO -->
+    <section id="chisiamo" class="border-t border-lightBorder py-24 bg-paper">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <span class="text-[10px] uppercase tracking-[0.35em] text-stoneGray font-medium">La Nostra Casa</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-light">L’Eredità dell’Essenziale</h2>
+                <div class="w-12 h-px bg-ink mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div class="space-y-6 text-xs sm:text-sm text-stoneGray leading-relaxed font-light">
+                    <p class="text-ink font-serif text-xl sm:text-2xl leading-snug">
+                        Nata nel cuore sartoriale di Milano, Atelier Essentiel ridefinisce il concetto di lusso attraverso la discrezione e il rigore materico.
+                    </p>
+                    <p>
+                        Fondata nel 2018, la nostra Maison è nata come risposta all'iper-produzione contemporanea. Scegliamo di non seguire le stagioni né le tendenze passeggera, focalizzandoci esclusivamente su capi iconici senza tempo.
+                    </p>
+                    <p>
+                        Ogni modello viene studiato per mesi, perfezionando la caduta del tessuto e le cuciture a mano, avvalendoci della collaborazione con storiche tessiture piemontesi e sarti artigiani che tramandano il mestiere da generazioni.
+                    </p>
+                </div>
+
+                <!-- Stats & Key Values -->
+                <div class="grid grid-cols-2 gap-6 p-8 border border-lightBorder bg-white">
+                    <div class="space-y-2 border-r border-b border-lightBorder pb-6 pr-4">
+                        <span class="font-serif text-3xl sm:text-4xl font-light text-ink">100%</span>
+                        <p class="text-[10px] uppercase tracking-[0.2em] text-stoneGray">Sartorialità Italiana</p>
+                    </div>
+                    <div class="space-y-2 border-b border-lightBorder pb-6 pl-2">
+                        <span class="font-serif text-3xl sm:text-4xl font-light text-ink">0%</span>
+                        <p class="text-[10px] uppercase tracking-[0.2em] text-stoneGray">Materiali Sintetici</p>
+                    </div>
+                    <div class="space-y-2 border-r border-lightBorder pt-4 pr-4">
+                        <span class="font-serif text-3xl sm:text-4xl font-light text-ink">300</span>
+                        <p class="text-[10px] uppercase tracking-[0.2em] text-stoneGray">Capi per Edizione</p>
+                    </div>
+                    <div class="space-y-2 pt-4 pl-2">
+                        <span class="font-serif text-3xl sm:text-4xl font-light text-ink">100 Yrs</span>
+                        <p class="text-[10px] uppercase tracking-[0.2em] text-stoneGray">Eredità dei Filati</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEZIONE FILOSOFIA -->
+    <section id="filosofia" class="border-t border-lightBorder py-20 bg-paper">
+        <div class="max-w-4xl mx-auto px-6 text-center space-y-4">
+            <span class="text-[10px] uppercase tracking-[0.3em] text-stoneGray">Il Manifesto</span>
+            <h2 class="font-serif text-3xl font-light">Sostenibilità del Tempo</h2>
+            <p class="text-xs sm:text-sm text-stoneGray leading-relaxed font-light max-w-2xl mx-auto">
+                Rifiutiamo i ritmi della moda stagionale. Creiamo capi pensati per rimanere immutati nel guardaroba per decenni, lavorati esclusivamente da storici laboratori artigianali italiani.
+            </p>
+        </div>
+    </section>
+
+    <!-- SEZIONE CONTATTI & BOUTIQUE -->
+    <section id="contatti" class="border-t border-lightBorder py-24 bg-[#f8f7f3]">
+        <div class="max-w-6xl mx-auto px-6">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <span class="text-[10px] uppercase tracking-[0.35em] text-stoneGray font-medium">Relazioni Privé</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-light">Contatta l’Atelier</h2>
+                <p class="text-xs text-stoneGray font-light tracking-wide">
+                    Il nostro team di concierge è a completa disposizione per consulenze d'immagine su misura o per prenotare un appuntamento privato in boutique.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Info Atelier & Boutique -->
+                <div class="lg:col-span-5 space-y-8 pr-0 lg:pr-6 border-b lg:border-b-0 lg:border-r border-lightBorder pb-12 lg:pb-0">
+                    <div>
+                        <h3 class="font-serif text-xl font-normal text-ink mb-2">Flagship Boutique</h3>
+                        <p class="text-xs text-stoneGray leading-relaxed font-light">
+                            Via Montenapoleone 12, 20121 Milano (MI)<br>
+                            Italia
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-serif text-xl font-normal text-ink mb-2">Orari Atelier</h3>
+                        <p class="text-xs text-stoneGray leading-relaxed font-light">
+                            Lunedì — Sabato: 10:00 - 19:30<br>
+                            Domenica: Su appuntamento
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-serif text-xl font-normal text-ink mb-2">Direct Contacts</h3>
+                        <p class="text-xs text-stoneGray leading-relaxed font-light">
+                            Email: <a href="mailto:concierge@atelier-essentiel.com" class="text-ink underline">concierge@atelier-essentiel.com</a><br>
+                            Tel: +39 02 8901 2345
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Form Contattaci -->
+                <div class="lg:col-span-7">
+                    <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="firstName" class="text-[10px] uppercase tracking-[0.2em] text-ink font-medium block">Nome *</label>
+                                <input type="text" id="firstName" required class="form-field" placeholder="Eugenio">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="lastName" class="text-[10px] uppercase tracking-[0.2em] text-ink font-medium block">Cognome *</label>
+                                <input type="text" id="lastName" required class="form-field" placeholder="Di Savoia">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="email" class="text-[10px] uppercase tracking-[0.2em] text-ink font-medium block">Email *</label>
+                            <input type="email" id="email" required class="form-field" placeholder="eugenio@maison.com">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="subject" class="text-[10px] uppercase tracking-[0.2em] text-ink font-medium block">Motivo della Richiesta</label>
+                            <select id="subject" class="form-field">
+                                <option value="Appuntamento in Boutique">Prenotazione Appuntamento in Boutique</option>
+                                <option value="Informazioni Capi Su Misura">Informazioni Capi Su Misura</option>
+                                <option value="Informativa Ordine">Assistenza su un Ordine</option>
+                                <option value="Altro">Altra Richiesta</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="message" class="text-[10px] uppercase tracking-[0.2em] text-ink font-medium block">Messaggio *</label>
+                            <textarea id="message" rows="4" required class="form-field resize-none" placeholder="Scrivi qui le tue richieste o la data preferita per la visita..."></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-ink text-paper text-xs uppercase tracking-[0.25em] hover:bg-goldAccent transition-colors duration-300">
+                            Invia Messaggio Privato
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER MINIMALE -->
+    <footer class="border-t border-lightBorder py-12 text-center text-stoneGray text-[10px] uppercase tracking-[0.25em] space-y-4 bg-paper">
+        <div>ATELIER ESSENTIEL · VIA MONTENAPOLEONE 12, MILANO</div>
+        <div class="text-[9px] text-stoneGray/70">&copy; 2026 ATELIER ESSENTIEL. TUTTI I DIRITTI RISERVATI.</div>
+    </footer>
+
+
+    <!-- ================= DRAWERS & MODALS ================= -->
+
+    <!-- CARRELLO DRAWER (SIDEBAR) -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 pointer-events-none hidden">
+        <div id="cartBackdrop" onclick="toggleCartDrawer()" class="absolute inset-0 bg-ink/40 backdrop-blur-xs opacity-0 transition-opacity pointer-events-auto"></div>
+        <div id="cartPanel" class="absolute top-0 right-0 bottom-0 w-full max-w-md bg-paper border-l border-lightBorder p-8 pointer-events-auto transform translate-x-full drawer-transition flex flex-col justify-between">
+            
+            <div>
+                <div class="flex items-center justify-between pb-6 border-b border-lightBorder">
+                    <h3 class="font-serif text-2xl font-light">La Tua Selezione</h3>
+                    <button onclick="toggleCartDrawer()" class="text-stoneGray hover:text-ink text-xs uppercase tracking-widest">Chiudi ✕</button>
+                </div>
+
+                <div id="cartItemsList" class="divide-y divide-lightBorder my-6 max-h-[55vh] overflow-y-auto pr-2">
+                    <!-- Dynamic cart items -->
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-lightBorder space-y-4">
+                <div class="flex justify-between items-center text-xs uppercase tracking-widest">
+                    <span>Totale</span>
+                    <span id="cartSubtotal" class="font-serif text-xl font-bold text-ink">€0</span>
+                </div>
+                <button onclick="handleCheckout()" class="w-full py-4 bg-ink text-paper text-xs uppercase tracking-[0.25em] hover:bg-stone-800 transition-colors">
+                    Procedi all'Ordine Privé
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- QUICK VIEW MODAL -->
+    <div id="detailModal" class="fixed inset-0 z-50 bg-ink/50 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-paper border border-lightBorder max-w-xl w-full p-8 sm:p-10 relative">
+            <button onclick="closeDetailModal()" class="absolute top-6 right-6 text-stoneGray hover:text-ink text-sm">✕</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-8 right-8 z-50 bg-ink text-paper text-[11px] uppercase tracking-widest px-6 py-3 border border-lightBorder shadow-xl transform translate-y-16 opacity-0 transition-all duration-300 pointer-events-none">
+        Messaggio Inviato
+    </div>
+
+
+    <!-- ================= LOGICA JAVASCRIPT ================= -->
+    <script>
+        // DATASET PRODOTTI
+        const products = [
+            {
+                id: 'AE-01',
+                name: 'Cappotto Architetturale',
+                category: 'Cappotti',
+                price: 3800,
+                composition: '100% Cashmere Loro Piana',
+                colors: [
+                    { name: 'Nero Assoluto', hex: '#111111' },
+                    { name: 'Cammello Reale', hex: '#b8976b' },
+                    { name: 'Avorio', hex: '#f4f1ea' }
+                ],
+                description: 'Cappotto taglio oversize con spalla scivolata e rever sartoriale affilato. Realizzato a mano in doppio strato di puro cashmere pettinato.',
+                care: 'Lavaggio a secco specializzato.'
+            },
+            {
+                id: 'AE-02',
+                name: 'Maglione Collo Alto Essenziale',
+                category: 'Maglieria',
+                price: 1200,
+                composition: '100% Lana Vergine Super 160s',
+                colors: [
+                    { name: 'Panna Seta', hex: '#e8e4dc' },
+                    { name: 'Antracite', hex: '#2b2b2b' },
+                    { name: 'Moka', hex: '#3d312a' }
+                ],
+                description: 'Maglieria fine a punto rasato senza cuciture visibili. Un capo termoregolatore di straordinaria morbidezza e caduta fluida.',
+                care: 'Lavare a mano in acqua fredda.'
+            },
+            {
+                id: 'AE-03',
+                name: 'Abito Scivolato in Seta',
+                category: 'Abiti',
+                price: 2600,
+                composition: '100% Seta Organzino di Como',
+                colors: [
+                    { name: 'Nero Notte', hex: '#0a0a0a' },
+                    { name: 'Sabbia', hex: '#d4c5b3' }
+                ],
+                description: 'Abito fluido dal taglio minimale in sbieco che accarezza la figura. Scollo a barchetta essenziale e rifiniture a mano.',
+                care: 'Stiro a vapore delicato.'
+            },
+            {
+                id: 'AE-04',
+                name: 'Pantalone Sartoriale Fluido',
+                category: 'Abiti',
+                price: 1150,
+                composition: '60% Seta, 40% Lana Pettinata',
+                colors: [
+                    { name: 'Nero', hex: '#111111' },
+                    { name: 'Grigio Chiaro', hex: '#a3a3a3' }
+                ],
+                description: 'Pantalone a gamba larga con doppia pinces frontale. Tessuto misto leggero che garantisce elasticità e piega impeccabile.',
+                care: 'Lavaggio a secco.'
+            },
+            {
+                id: 'AE-05',
+                name: 'Cardigan Misto Cashmere',
+                category: 'Maglieria',
+                price: 1650,
+                composition: '70% Cashmere, 30% Seta Organica',
+                colors: [
+                    { name: 'Avorio', hex: '#f0ece1' },
+                    { name: 'Carbone', hex: '#242424' }
+                ],
+                description: 'Cardigan dalla linea dritta con bottoni discreti in madreperla opaca. Ideale per la stratificazione in ogni stagione.',
+                care: 'Conservare piegato.'
+            },
+            {
+                id: 'AE-06',
+                name: 'Borsa Tote in Nappa Liscia',
+                category: 'Accessori',
+                price: 2400,
+                composition: '100% Pelle Nappa Pienofiore',
+                colors: [
+                    { name: 'Nero Assoluto', hex: '#111111' },
+                    { name: 'Cuoio Scuro', hex: '#5c3a21' }
+                ],
+                description: 'Tote bag strutturata senza loghi visibili, foderata internamente in camoscio naturale. Un capol
