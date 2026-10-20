@@ -19,90 +19,6 @@
     </header>
 
     <main>
-        <section class="hero">
-            <p class="sottotitolo">LA NOSTRA IDENTITÀ</p>
-            <h1>Chi siamo</h1>
-            <div class="linea"></div>
-            <p class="intro">
-                Quattro studenti, una passione per il lusso.
-            </p>
-            <p class="descrizione">
-                Siamo un gruppo di quattro studenti che ha deciso
-                di realizzare un sito dedicato al mondo dei negozi
-                di lusso, della moda e dell'eleganza.
-                Il nostro obiettivo è far conoscere boutique esclusive,
-                grandi marchi e le tendenze che caratterizzano
-                il mondo del lusso.
-            </p>
-        </section>
-
-        <section class="missione">
-            <h2>La nostra missione</h2>
-            <p>
-                Vogliamo creare uno spazio digitale in cui gli
-                appassionati possano scoprire negozi prestigiosi,
-                conoscere i brand più famosi e lasciarsi ispirare
-                dall'eleganza e dalla qualità.
-            </p>
-        </section>
-
-        <section class="valori">
-            <h2>I nostri valori</h2>
-
-            <div class="cards">
-                <div class="card">
-                    <span>01</span>
-                    <h3>Eleganza</h3>
-                    <p>
-                        Raccontiamo lo stile e la raffinatezza
-                        dei negozi di lusso.
-                    </p>
-                </div>
-
-                <div class="card">
-                    <span>02</span>
-                    <h3>Passione</h3>
-                    <p>
-                        Mettiamo entusiasmo e creatività
-                        nel nostro progetto.
-                    </p>
-                </div>
-
-                <div class="card">
-                    <span>03</span>
-                    <h3>Collaborazione</h3>
-                    <p>
-                        Lavoriamo insieme, condividendo idee
-                        e competenze.
-                    </p>
-                </div>
-
-                <div class="card">
-                    <span>04</span>
-                    <h3>Innovazione</h3>
-                    <p>
-                        Utilizziamo il web per scoprire
-                        e raccontare il mondo del lusso.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="conclusione">
-            <h2>Il lusso, da una nuova prospettiva.</h2>
-            <p>
-                Questo progetto rappresenta per noi
-                un'occasione per imparare, collaborare
-                e trasformare le nostre idee in realtà.
-            </p>
-            <a href="#" class="bottone">Scopri i negozi</a>
-        </section>
-    </main>
-
-    <footer>
-        <p>© 2026 LUXE. | Progetto scolastico realizzato da 4 studenti</p>
-    </footer>
-
 </body>
 </html>
 <!DOCTYPE html>
@@ -697,3 +613,106 @@
     </script>
 </body>
 </html>
+css
+
+/* =========================
+   SEZIONE CONTATTACI
+========================= */
+
+.contact {
+    background-color: #f8f6f2;
+    padding: 100px 8%;
+}
+
+.contact .section-heading {
+    max-width: 650px;
+    margin: 0 auto 50px;
+    text-align: center;
+}
+
+.contact-form {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #29251f;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+    border: 1px solid #d9d3ca;
+    border-radius: 0;
+    background-color: #fff;
+    color: #29251f;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #a88952;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #a19b92;
+}
+
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.contact-button {
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.contact-button:hover {
+    background-color: #a88952;
+}
+
+/* RESPONSIVE: SMARTPHONE E TABLET */
+
+@media (max-width: 600px) {
+    .contact {
+        padding: 70px 6%;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .contact-button {
+        width: 100%;
+        text-align: center;
+    }
+}
